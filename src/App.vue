@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <el-row>
-          <el-col :span="12" class="sysname">扫雪工作管理系统</el-col>
+          <el-col :span="12" class="sysname">课程教学质量评测反馈系统</el-col>
           <el-col :span="10" class="username" v-if="login">欢迎，{{name}}</el-col>
           <el-col :span="2" class="username" @click.native="logout" v-if="login"><i class="el-icon-remove"></i>退出</el-col>
         </el-row>
@@ -121,6 +121,6 @@ export default {
   .el-header {
     color: white;
     line-height: 60px;
-    background-color: #409EFF;
+    background-color: #4ec2af;
   }
 </style>
