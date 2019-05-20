@@ -1,9 +1,9 @@
 <template>
   <div class="hello">
     <el-row>
-        <el-card class="box-card" style="margin: 0 auto;width:50%;min-height: 00px;">
-          <div slot="header" class="clearfix">
-            <h1>请先登录</h1>
+        <div style="margin: 0 auto;width:40%;">
+          <div class="clearfix" style="font-size:30px;">
+            <h2>登录</h2>
           </div>
           <div>
             <br>
@@ -13,7 +13,6 @@
               </el-col>
               <el-col :span="22">
                 <el-input
-                  placeholder="请输入您的身份证后六位"
                   prefix-icon="el-icon-user-solid"
                   v-model="userId">
                 </el-input>
@@ -27,16 +26,18 @@
               <el-col :span="22">
                 <el-input
                   type="password"
-                  placeholder="请输入您的账号密码"
                   prefix-icon="el-icon-s-check"
                   v-model="password">
                 </el-input>
               </el-col>
             </el-row>
             <br><br>
-            <el-button type="primary" style="width: 100%;" @click="loginHandle">登录</el-button>
-            <br><br>
-            <el-button type="warning" style="width: 100%;" @click="dialogVisible = true">没有账号？点击注册</el-button>
+            <el-row>
+              <el-col>
+                <el-button type="primary" style="width:100%;" @click="loginHandle" round>登录</el-button>
+              </el-col>
+            </el-row>
+            
             <el-dialog
               title="注册"
               :visible.sync="dialogVisible"
@@ -69,7 +70,7 @@
               </span>
             </el-dialog>
           </div>
-        </el-card>
+        </div>
     </el-row>
     
   </div>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>
+      <el-header style="height:200px;">
         <el-row>
           <el-col :span="12" class="sysname">课程教学质量评测反馈系统</el-col>
           <el-col :span="10" class="username" v-if="login">欢迎，{{name}}</el-col>
@@ -10,38 +10,7 @@
       </el-header>
       <el-main style="min-height: 700px;background-color:#fff;">
         <el-row>
-          <el-col :span="4" style="padding-right:20px;" v-if="login">
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              @select="handleSelect">
-              <el-menu-item index="staff" v-if="identify==='A'">
-                <i class="el-icon-user"></i>
-                <span slot="title">员工中心</span>
-              </el-menu-item>
-              <el-menu-item index="leader" v-if="identify==='B'">
-                <i class="el-icon-user"></i>
-                <span slot="title">组长中心</span>
-              </el-menu-item>
-              <el-menu-item index="manager" v-if="identify==='C'">
-                <i class="el-icon-user"></i>
-                <span slot="title">管理中心</span>
-              </el-menu-item>
-              <el-menu-item index="honor">
-                <i class="el-icon-medal"></i>
-                <span slot="title">荣誉墙</span>
-              </el-menu-item>
-              <el-menu-item index="perform">
-                <i class="el-icon-trophy"></i>
-                <span slot="title">绩效墙</span>
-              </el-menu-item>
-              <el-menu-item index="forum">
-                <i class="el-icon-chat-line-round"></i>
-                <span slot="title">雪情论坛</span>
-              </el-menu-item>
-            </el-menu>
-          </el-col>
-          <el-col :span="login?20:24">
+          <el-col :span="24">
             <router-view/>
           </el-col>
         </el-row>
@@ -55,7 +24,7 @@ export default {
   name: 'App',
   data() {
     return {
-      login: false,
+      login: true,
       identify: "",
       name: "",
     }
@@ -106,21 +75,24 @@ export default {
   position: relative;
 }
 .el-main {
-  margin-top: 30px;
+  margin-top: 10px;
   border: 1px solid #eee;
 }
   .username {
     text-align: right;
     padding-right: 10px;
+    line-height: 350px;
+    height: 200px;
   }
   .sysname {
     text-align: left;
-    font-size: 35px;
-    font-weight: 800;
+    font-size: 60px;
+    font-weight: 300;
+    line-height: 200px;
+    height: 200px;
   }
   .el-header {
     color: white;
-    line-height: 60px;
     background-color: #4ec2af;
   }
 </style>
