@@ -1,63 +1,229 @@
 <template>
   <div class="hello">
-    <p style="font-size:30px;margin-top:0;margin-bottom:0;">{{title}}</p>
-    <p style="color: #666666;">{{`${time} ${author}`}}</p>
-    <el-divider></el-divider>
-    <div v-html="content" style="word-wrap:break-word;"></div>
+    <el-divider content-position="left">
+      <h2>学生评教</h2>
+    </el-divider>
+    <el-table
+      :data="tableData"
+      stripe
+      style="width: 100%;">
+      <el-table-column
+        type="index">
+      </el-table-column>
+      <el-table-column
+        prop="userName"
+        label="教师名称">
+      </el-table-column>
+      <el-table-column
+        prop="lessonName"
+        label="所授课程">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="操作">
+        <template slot-scope="scope">
+          <el-button
+          plain
+          size="mini"
+          type="primary"
+          @click="visibleHandle('scoreVisible',scope.row.userId)">评分</el-button>
+        <el-button
+          plain
+          size="mini"
+          type="success"
+          @click="visibleHandle('commentVisible',scope.row.userId)">评价</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog
+        title="评分"
+        :visible.sync="scoreVisible"
+        width="50%">
+        <el-table
+          :data="questionTable"
+          stripe
+          style="width: 100%;">
+          <el-table-column
+            type="index">
+          </el-table-column>
+          <el-table-column
+            prop="questionContent"
+            label="题目">
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="选项">
+            <template slot-scope="scope">
+              <el-radio-group v-model="questionResult[scope.$index].result">
+                <el-radio :label="4">差</el-radio>
+                <el-radio :label="3">中</el-radio>
+                <el-radio :label="2">良</el-radio>
+                <el-radio :label="1">优</el-radio>
+              </el-radio-group>
+            </template>
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="changeStaffVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changeStaff()">确 定</el-button>
+        </span>
+    </el-dialog>
+    <el-dialog
+        title="评价"
+        :visible.sync="commentVisible"
+        width="30%">
+        请输入你对该老师的评价：
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 4}"
+          placeholder="请输入内容"
+          v-model="textarea2">
+        </el-input>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="changeStaffVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changeStaff()">确 定</el-button>
+        </span>
+    </el-dialog>
     <br>
-    <el-divider></el-divider>
-    <el-card class="box-card" shadow="never" style="color:#777777;" v-for="snow in snows" :key="snow.snowId" >
-        <p><i class="el-icon-s-custom"></i>{{`${snow.author} ${snow.time}`}}</p>
-        <el-row>
-            <el-col :span="20" style="color:#333333;" v-html="snow.content">
-              
-            </el-col>
-            <el-col :span="4"></el-col>
-        </el-row><br>
-    </el-card>
-    <br>
-    <el-pagination
-    style="text-align:right;"
-    background
-    layout="prev, pager, next"
-    @current-change="handleCurrentChange"
-    :current-page.sync="nowPage"
-    :page-size="page.eachPage"
-    :total="page.totalSize">
-    </el-pagination>
-    <br>
-    <quill-editor
-    v-model="comment" 
-    ref="myQuillEditor" 
-    :options="editorOption" 
-    @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-    @change="onEditorChange($event)">
-    </quill-editor>
-    <p style="text-align:right;"><el-button size="small" type="primary" @click="commentHandle">评论</el-button></p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Newscontent',
+  name: 'Student',
   data () {
     return {
-      editorOption:{
-        modules:{
-            toolbar:[
-            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                ['blockquote', 'code-block']
-            ]
+      scoreVisible: false,
+      commentVisible: false,
+      questionResult:[
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
+        },
+        {
+          questionId: "1",
+          result: 0,
         }
-      },
-      title: "--",
-      time: "--",
-      author: "--",
-      content:"<h1>hell0000098765456789098765457654345678987654567890987654567890678998765456789098765456789098765456789o</h1>哈哈哈哈哈哈哈哈哈哈哈",
-      nowPage: 1,
-      page:{},
-      snows: [],
-      comment:""
+      ],
+      tableData: [{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },{
+          userId:'123',
+          userName: '何老师',
+          lessonName: '编译原理'
+        },],
+        questionTable: [
+          {
+            questionId: "1",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "2",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "3",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "4",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "5",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "6",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "7",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "8",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "9",
+            questionContent: "她教的有趣吗？",
+          },
+          {
+            questionId: "10",
+            questionContent: "她教的有趣吗？",
+          },
+        ]
     }
   },
   created() {
@@ -75,6 +241,10 @@ export default {
     });
   },
   methods:{
+      visibleHandle(visible,userId) {
+        this[visible] = true;
+        this.selectT = userId;
+      },
       tableRowClassName({row, rowIndex}) {
         if (rowIndex < 3) {
           return 'warning-row';
