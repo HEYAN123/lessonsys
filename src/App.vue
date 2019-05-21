@@ -86,8 +86,8 @@ export default {
   name: 'App',
   data() {
     return {
-      login: false,
-      identify: "S",
+      login: true,
+      identify: "T",
       userName: "",
       infoVisible: false,
       userInfo:{

@@ -116,7 +116,7 @@ export default {
   name: 'Login',
   data () {
     return {
-      signinVisible: true,
+      signinVisible: false,
       signinVisible1: false,
       type:"",
       userId: "",
