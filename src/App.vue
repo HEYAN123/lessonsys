@@ -87,7 +87,7 @@ export default {
   data() {
     return {
       login: true,
-      identify: "T",
+      identify: "L",
       userName: "",
       infoVisible: false,
       userInfo:{
