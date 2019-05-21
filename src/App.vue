@@ -24,7 +24,7 @@ export default {
   name: 'App',
   data() {
     return {
-      login: true,
+      login: false,
       identify: "",
       name: "",
     }

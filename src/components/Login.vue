@@ -37,36 +37,71 @@
                 <el-button type="primary" style="width:100%;" @click="loginHandle" round>登录</el-button>
               </el-col>
             </el-row>
-            
             <el-dialog
-              title="注册"
-              :visible.sync="dialogVisible"
+              title="请完善您的信息"
+              :visible.sync="signinVisible"
               width="30%">
               <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" prop="name">
-                  <el-input v-model="ruleForm.name"></el-input>
+                <el-form-item label="姓名" prop="userName">
+                  <el-input v-model="ruleForm.userName"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" prop="sex">
                   <el-radio v-model="ruleForm.sex" label="男">男</el-radio>
                   <el-radio v-model="ruleForm.sex" label="女">女</el-radio>
                 </el-form-item>
-                <el-form-item label="身份证号" prop="idCard">
-                  <el-input v-model="ruleForm.userId"></el-input>
+                <el-form-item label="出生日期" prop="birthday">
+                  <el-date-picker
+                    v-model="ruleForm.birthday"
+                    type="date"
+                    placeholder="选择日期">
+                  </el-date-picker>
                 </el-form-item>
-                <el-form-item label="工龄" prop="workAge">
-                  <el-input v-model="ruleForm.workAge"></el-input>
+                <el-form-item label="学历" prop="education">
+                  <el-input v-model="ruleForm.education"></el-input>
                 </el-form-item>
-                <el-form-item label="居住地址" prop="address">
+                <el-form-item label="毕业院校" prop="collage">
+                  <el-input v-model="ruleForm.collage"></el-input>
+                </el-form-item>
+                <el-form-item label="办公地点" prop="address">
                   <el-input v-model="ruleForm.address"></el-input>
-                </el-form-item>
-                <el-form-item label="账号密码" prop="password">
-                  <el-input v-model="ruleForm.password" type="password"></el-input>
                 </el-form-item>
               </el-form>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="submitForm">确 定</el-button>
+                <el-button @click="signinVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitForm('T')">确 定</el-button>
+              </span>
+            </el-dialog>
+            <el-dialog
+              title="请完善您的信息"
+              :visible.sync="signinVisible1"
+              width="30%">
+              <el-form :model="ruleForm1" :rules="rules" ref="ruleForm1" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="姓名" prop="userName">
+                  <el-input v-model="ruleForm1.userName"></el-input>
+                </el-form-item>
+                <el-form-item label="性别" prop="sex">
+                  <el-radio v-model="ruleForm1.sex" label="男">男</el-radio>
+                  <el-radio v-model="ruleForm1.sex" label="女">女</el-radio>
+                </el-form-item>
+                <el-form-item label="出生日期" prop="birthday">
+                  <el-date-picker
+                    v-model="ruleForm1.birthday"
+                    type="date"
+                    placeholder="选择日期">
+                  </el-date-picker>
+                </el-form-item>
+                <el-form-item label="电话" prop="phone">
+                  <el-input v-model="ruleForm1.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="备注信息" prop="tip">
+                  <el-input v-model="ruleForm1.tip"></el-input>
+                </el-form-item>
+              </el-form>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="resetForm('ruleForm1')">重置</el-button>
+                <el-button @click="signinVisible1 = false">取 消</el-button>
+                <el-button type="primary" @click="submitForm('S')">确 定</el-button>
               </span>
             </el-dialog>
           </div>
@@ -81,29 +116,47 @@ export default {
   name: 'Login',
   data () {
     return {
-      dialogVisible: false,
+      signinVisible: false,
+      signinVisible1: false,
+      type:"",
       userId: "",
       password: "",
       ruleForm: {
-          name: '',
-          sex: '',
-          idCard: '',
-          workAge: 0,
-          address: '',
-          password: ''
-        },
+        userName: '',
+        sex: '',
+        birthday: '',
+        education: '',
+        address: '',
+        collage: ''
+      },
+      ruleForm1: {
+        userName: '',
+        sex: '',
+        birthday: '',
+        phone: '',
+        tip: ''
+      },
       rules: {
-        name: [
+        userName: [
           { required: true, message: '请输入您的姓名', trigger: 'blur' }
         ],
         sex: [
           { required: true, message: '请选择您的性别', trigger: 'blur' }
         ],
-        userId: [
-          { required: true, message: '请输入您的身份证号码', trigger: 'blur' }
+        birthday: [
+          { required: true, message: '请选择您的出生日期', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '请设置您的密码', trigger: 'blur' }
+        education: [
+          { required: true, message: '请输入您的学历', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '请输入您的工作地点', trigger: 'blur' }
+        ],
+        collage: [
+          { required: true, message: '请输入您的毕业院校', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请输入您的联系电话', trigger: 'blur' }
         ],
       }
     }
@@ -119,42 +172,62 @@ export default {
       }).
       then(res=>{
         if(res.data.code === 0) {
+          if(res.data.message === "ok") {
             this.$message.success('登录成功！');
             this.Cookies.set('type',res.data.type);
-            this.Cookies.set('name',res.data.name);
+            this.Cookies.set('userName',res.data.userName);
             this.Cookies.set('userId',this.userId);
-            
-            if(res.data.type === 'A') {
+            if(res.data.data.type === 'S') {
               this.$router.push({
-                path: '/staff'
+                path: '/student'
               });
-
             }
-            if(res.data.type === 'B') {
+            if(res.data.data.type === 'T') {
+              this.$router.push({
+                path: '/teacher'
+              });
+            }
+            if(res.data.data.type === 'L') {
               this.$router.push({
                 path: '/leader'
               });
             }
-            if(res.data.type === 'C') {
+            if(res.data.data.type === 'M') {
               this.$router.push({
                 path: '/manager'
               });
             }
-            location.reload();
+          }
+          else {
+            if(res.data.type === "T") {
+              this.signinVisible = true;
+            }
+            else {
+
+            }
+          }
         }
         else {
             this.$message.error(res.data.message);
         }
       })
     },
-    submitForm() {
-      this.axios.post(`${this.API}signin`,this.ruleForm).
+    submitForm(type) {
+      let tempForm = {};
+      let tempVisible = true;
+      if(type === "T") {
+        tempForm = this.ruleForm;
+        tempVisible = this.signinVisible;
+      }
+      if(type === "S") {
+        tempForm = this.ruleForm1;
+        tempVisible = this.signinVisible1;
+      }
+      this.axios.post(`${this.API}signin/${this.userId}`,tempForm).
       then(res=>{
         if(res.data.code === 0) {
-            this.$Message.success('注册成功！');
-            this.$router.push({
-                path: '/'
-            })
+            this.$Message.success('信息补全成功，请重新登录！');
+            this.signinVisible1 === true ? this.signinVisible1 = false : this.signinVisible = false;
         }
         else {
             this.$message.error(res.data.message);
