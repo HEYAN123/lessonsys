@@ -162,7 +162,6 @@ export default {
     }
   },
   created() {
-
   },
   methods: {
     loginHandle(){
@@ -197,13 +196,14 @@ export default {
                 path: '/manager'
               });
             }
+            location.reload;
           }
-          else {
+          else if(res.data.message === "fail") {
             if(res.data.type === "T") {
               this.signinVisible = true;
             }
-            else {
-
+            else if(res.data,type === "S") {
+              this.signinVisible1 = true;
             }
           }
         }
@@ -226,17 +226,20 @@ export default {
       this.axios.post(`${this.API}signin/${this.userId}`,tempForm).
       then(res=>{
         if(res.data.code === 0) {
-            this.$Message.success('信息补全成功，请重新登录！');
-            this.signinVisible1 === true ? this.signinVisible1 = false : this.signinVisible = false;
+            this.$message.success('信息补全成功，请重新登录！');
+            if(this.signinVisible1) {
+              this.signinVisible1 = false;
+            }
+            else this.signinVisible = false;
         }
         else {
             this.$message.error(res.data.message);
         }
       })
     },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
   }
 }
 </script>
