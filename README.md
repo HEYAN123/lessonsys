@@ -343,7 +343,7 @@
 
 ### 1.3.5 评价动作
 
-- POST /lesson?to=321
+- POST /lesson/comment?to=321
 - 只需记录是给哪个老师的即可
 - payload:
 
