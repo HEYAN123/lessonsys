@@ -76,8 +76,12 @@
         :total="page.totalSize">
         </el-pagination>
     <el-divider content-position="left">
-      <h2>评教情况</h2>
-    </el-divider><br>
+      <h2 style="margin: 0;">评教情况</h2>
+    </el-divider>
+    <el-alert
+      title="经过评教活动得出，您的教学质量较差，请改进！！！"
+      type="warning">
+    </el-alert>
     <p><b>当前得分：</b>87</p>
     <p><b>学生评价：</b></p>
     <div>

@@ -138,7 +138,15 @@
 {
   "code": 0,
   "data": {
-
+    "userId": "123456",
+    "userName": "贺老师",
+    "email": "123456@qq.com",
+    "phone": "123445678",
+    "sex": "女",
+    "birthday": "1998-09-16",
+    "education": "博士",
+    "collage": "林大",
+    "address": "林大行政楼"
   }
 }
 ```
@@ -150,7 +158,7 @@
   "code": 0,
   "data": {
     "userId": "123456",
-    "class": "2016-6",
+    "className": "2016-6",
     "major": "计科",
     "years": "4年",
     "education": "本科",
