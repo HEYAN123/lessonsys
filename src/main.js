@@ -5,6 +5,7 @@ import ElementUI from 'element-ui'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import VueQuillEditor from 'vue-quill-editor'
+import echarts from 'echarts';
 import './theme/index.css'
 import App from './App'
 import router from './router'
@@ -17,9 +18,10 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueQuillEditor);
 
-Vue.prototype.API = "http://139.196.75.14/snow/"
+Vue.prototype.API = "http://139.196.75.14/lesson/"
 Vue.prototype.axios = axios
 Vue.prototype.Cookies = Cookies
+Vue.prototype.echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({
