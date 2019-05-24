@@ -23,36 +23,7 @@
         <el-table-column
             type="index">
         </el-table-column>
-        <el-table-column type="expand">
-        <template slot-scope="props">
-            <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="教师姓名:">
-                <span>{{ props.row.userName }}</span>
-            </el-form-item>
-            <el-form-item label="电子邮箱:">
-                <span>{{ props.row.email }}</span>
-            </el-form-item>
-            <el-form-item label="联系电话:">
-                <span>{{ props.row.phone }}</span>
-            </el-form-item>
-            <el-form-item label="性别:">
-                <span>{{ props.row.sex }}</span>
-            </el-form-item>
-            <el-form-item label="出生日期:">
-                <span>{{ props.row.birthday }}</span>
-            </el-form-item>
-            <el-form-item label="学历:">
-                <span>{{ props.row.education }}</span>
-            </el-form-item>
-            <el-form-item label="毕业院校:">
-                <span>{{ props.row.collage }}</span>
-            </el-form-item>
-            <el-form-item label="办公地点:">
-                <span>{{ props.row.address }}</span>
-            </el-form-item>
-            </el-form>
-        </template>
-        </el-table-column>
+        
         <el-table-column
             prop="userId"
             label="教师工号">
@@ -60,10 +31,34 @@
         <el-table-column
             prop="userName"
             label="教师姓名">
+            <template slot-scope="scope">
+                <el-tooltip class="item" effect="dark"
+                :content="`教师姓名：${scope.row.userName}
+                电子邮箱：${scope.row.email}
+                联系电话：${scope.row.phone}
+                性别：${scope.row.sex}
+                出生日期：${scope.row.birthday}
+                学历：${scope.row.education}
+                毕业学校：${scope.row.collage}
+                办公地点：${scope.row.address}`"
+                placement="top">
+                    <el-button type="text">{{scope.row.userName}}</el-button>
+                </el-tooltip>
+            </template>
         </el-table-column>
         <el-table-column
             prop="lessonName"
             label="课程">
+            <template slot-scope="scope">
+                <el-tooltip class="item" effect="dark"
+                :content="`课程名称：${scope.row.lessonName}
+                学分：${scope.row.lessonScore}
+                学时：${scope.row.lessonTime}
+                类型：${scope.row.lessonType}`"
+                placement="top">
+                    <el-button type="text">{{scope.row.lessonName}}</el-button>
+                </el-tooltip>
+            </template>
         </el-table-column>
         <el-table-column
         prop="className"
@@ -130,20 +125,6 @@
             </template>
         </el-table-column>
         </el-table><br>
-        </el-collapse-item>
-        <el-collapse-item>
-            <template slot="title">
-            <h2 style="margin: 0;">反馈管理</h2>
-            </template>
-            请输入低分反馈界限值：
-            <el-input type="number" style="width: 200px;"></el-input><br><br>
-            请输入低分反馈内容：
-            <el-input
-                type="textarea"
-                :autosize="{ minRows: 4}"
-                v-model="textarea2">
-            </el-input><br><br>
-            <el-button plain size="mini" type="primary">确定</el-button>
         </el-collapse-item>
         <el-collapse-item>
             <template slot="title">
@@ -288,8 +269,13 @@ export default {
                 education: "博士",
                 collage: "林大",
                 address: "林大行政楼",
+                lessonId: "123",
                 lessonName: "编译原理",
-                className: "2016-06"
+                classId: "123",
+                className: "2016-06",
+                lessonScore: 2,
+                lessonTime: 12,
+                lessonType: "必修"
           },
           {
                 userId: "123",
@@ -302,7 +288,10 @@ export default {
                 collage: "林大",
                 address: "林大行政楼",
                 lessonName: "编译原理",
-                className: "2016-06"
+                className: "2016-06",
+                lessonScore: 2,
+                lessonTime: 12,
+                lessonType: "必修"
           },
           {
                 userId: "123",
@@ -315,33 +304,10 @@ export default {
                 collage: "林大",
                 address: "林大行政楼",
                 lessonName: "编译原理",
-                className: "2016-06"
-          },
-          {
-                userId: "123",
-                userName: "贺老师",
-                email: "123456@qq.com",
-                phone: "123445678",
-                sex: "女",
-                birthday: "1998-09-16",
-                education: "博士",
-                collage: "林大",
-                address: "林大行政楼",
-                lessonName: "编译原理",
-                className: "2016-06"
-          },
-          {
-                userId: "123",
-                userName: "贺老师",
-                email: "123456@qq.com",
-                phone: "123445678",
-                sex: "女",
-                birthday: "1998-09-16",
-                education: "博士",
-                collage: "林大",
-                address: "林大行政楼",
-                lessonName: "编译原理",
-                className: "2016-06"
+                className: "2016-06",
+                lessonScore: 2,
+                lessonTime: 12,
+                lessonType: "必修"
           }
       ],
       studentTable: [

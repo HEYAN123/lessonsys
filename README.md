@@ -28,11 +28,10 @@
     - [1.5.3 评价列表](#153-评价列表)
     - [1.5.4 投票结果导出](#154-投票结果导出)
   - [1.6. 管理端](#16-管理端)
-    - [1.6.1 开关投票系统](#161-开关投票系统)
-    - [1.6.1 开关评价系统](#161-开关评价系统)
-    - [1.6.4 学科管理](#164-学科管理)
+    - [1.6.1 开关投票/评价系统](#161-开关投票/评价系统)
+    - [1.6.2 教学管理](#162-教学管理)
+      - [1.6.2.1 获取教学列表](#1621-获取教学列表)
       - [1.6.3.1 学科录入](#1631-学科录入)
-      - [1.6.3.2 获取学科列表](#1632-获取学科列表)
       - [1.6.3.2 更改学科](#1632-更改学科)
     - [1.6.2 教师管理](#162-教师管理)
       - [1.6.2.1 教师录入](#1621-教师录入)
@@ -794,3 +793,106 @@
 ### 1.5.4 投票结果导出
 
 - GET /lesson/download  具体怎么实现？
+
+---
+
+## 1.6 管理端
+
+### 1.6.1 开关投票/评价系统
+
+- PUT /lesson/sysState
+- payload: voteState 投票系统 | commentState 评价系统
+
+```json
+{
+  "voteState": 1
+}
+```
+
+```json
+{
+  "code": 0
+}
+```
+
+---
+
+### 1.6.2 教学管理
+
+#### 1.6.2.1 获取教学列表
+
+- GET /lesson/teachList
+
+- return:
+
+```json
+{
+  "code": 0,
+  "data": {
+    "teachList": [
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "email": "123456@qq.com",
+        "phone": "123445678",
+        "sex": "女",
+        "birthday": "1998-09-16",
+        "education": "博士",
+        "collage": "林大",
+        "address": "林大行政楼",
+        "lessonId": "123",
+        "lessonName": "编译原理",
+        "lessonScore": 2,
+        "lessonTime": 12,
+        "lessonType": "必修",
+        "classId": "123",
+        "className": "2016-06",
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "email": "123456@qq.com",
+        "phone": "123445678",
+        "sex": "女",
+        "birthday": "1998-09-16",
+        "education": "博士",
+        "collage": "林大",
+        "address": "林大行政楼",
+        "lessonId": "123",
+        "lessonName": "编译原理",
+        "lessonScore": 2,
+        "lessonTime": 12,
+        "lessonType": "必修",
+        "classId": "123",
+        "className": "2016-06",
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "email": "123456@qq.com",
+        "phone": "123445678",
+        "sex": "女",
+        "birthday": "1998-09-16",
+        "education": "博士",
+        "collage": "林大",
+        "address": "林大行政楼",
+        "lessonId": "123",
+        "lessonName": "编译原理",
+        "lessonScore": 2,
+        "lessonTime": 12,
+        "lessonType": "必修",
+        "classId": "123",
+        "className": "2016-06",
+      },
+    ],
+    "page": {
+      "totalSize": 25,
+      "totalPage": 10,
+      "eachPage": 5,
+      "nowPage": 1
+    }
+  }
+}
+```
+
+---
