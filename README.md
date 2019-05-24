@@ -24,8 +24,7 @@
     - [1.4.6 删除学生](#146-删除学生)
   - [1.5. 浏览端](#15-浏览端)
     - [1.5.1 教师所在班级学生投票统计](#151-教师所在班级学生投票统计)
-    - [1.5.2 年级学生对老师总投票统计](#152-年级学生对老师总投票统计)
-    - [1.5.3 教研组（学科）教师投票统计](#153-教研组（学科）教师投票统计)
+    - [1.5.2 获取教师名单](#152-获取教师名单)
     - [1.5.3 评价列表](#153-评价列表)
     - [1.5.4 投票结果导出](#154-投票结果导出)
   - [1.6. 管理端](#16-管理端)
@@ -532,3 +531,266 @@
 ```
 
 ---
+
+## 1.5. 浏览端
+
+### 1.5.1 投票统计
+
+- GET /lesson/analyse?way=
+- way: class = 按班级 | lesson = 按学科 | grade = 按年级
+
+- return:
+
+- 按班级：
+- 每个老师名下把全校所有班级列出来，没有投的传0，否则这个表不好整
+
+```json
+{
+  "code": 0,
+  "data": {
+    "vList": [
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "className": "2016-06",
+            "score": 80
+          },
+          {
+            "className": "2016-06",
+            "score": 80
+          },
+          {
+            "className": "2016-06",
+            "score": 0
+          }
+        ]
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "className": "2016-06",
+            "score": 80
+          },
+          {
+            "className": "2016-06",
+            "score": 80
+          },
+          {
+            "className": "2016-06",
+            "score": 0
+          }
+        ]
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "className": "2016-06",
+            "score": 80
+          },
+          {
+            "className": "2016-06",
+            "score": 80
+          },
+          {
+            "className": "2016-06",
+            "score": 0
+          }
+        ]
+      }
+    ],
+    "page": {
+      "totalSize": 25,
+      "totalPage": 10,
+      "eachPage": 5,
+      "nowPage": 1
+    }
+  }
+}
+```
+
+- 按学科：全部学科
+
+```json
+{
+  "code": 0,
+  "data": {
+    "vList": [
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "lessonName": "2016-06",
+            "score": 80
+          },
+          {
+            "lessonName": "2016-06",
+            "score": 80
+          },
+          {
+            "lessonName": "2016-06",
+            "score": 0
+          }
+        ]
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "lessonName": "2016-06",
+            "score": 80
+          },
+          {
+            "lessonName": "2016-06",
+            "score": 80
+          },
+          {
+            "lessonName": "2016-06",
+            "score": 0
+          }
+        ]
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "lessonName": "2016-06",
+            "score": 80
+          },
+          {
+            "lessonName": "2016-06",
+            "score": 80
+          },
+          {
+            "lessonName": "2016-06",
+            "score": 0
+          }
+        ]
+      },
+    ],
+    "page": {
+      "totalSize": 25,
+      "totalPage": 10,
+      "eachPage": 5,
+      "nowPage": 1
+    }
+  }
+}
+```
+
+- 按年级：全部年级
+
+```json
+{
+  "code": 0,
+  "data": {
+    "vList": [
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "grade": "2016",
+            "score": 80
+          },
+          {
+            "grade": "2016",
+            "score": 80
+          },
+          {
+            "grade": "2016",
+            "score": 0
+          }
+        ]
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "grade": "2016",
+            "score": 80
+          },
+          {
+            "grade": "2016",
+            "score": 80
+          },
+          {
+            "grade": "2016",
+            "score": 0
+          }
+        ]
+      },
+      {
+        "userId": "123",
+        "userName": "贺老师",
+        "vResult": [
+          {
+            "grade": "2016",
+            "score": 80
+          },
+          {
+            "grade": "2016",
+            "score": 80
+          },
+          {
+            "grade": "2016",
+            "score": 0
+          }
+        ]
+      },
+    ],
+    "page": {
+      "totalSize": 25,
+      "totalPage": 10,
+      "eachPage": 5,
+      "nowPage": 1
+    }
+  }
+}
+```
+
+---
+
+### 1.5.2 获取教师名单
+
+- GET /lesson/tList
+- return:
+
+```json
+{
+  "code": 0,
+  "data": [
+    {
+      "userId": "123",
+      "userName": "贺妍"
+    },
+    {
+      "userId": "123",
+      "userName": "贺妍"
+    },
+    {
+      "userId": "123",
+      "userName": "贺妍"
+    }
+  ]
+}
+```
+
+---
+
+### 1.5.3 评价列表
+
+- GET /lesson/cList?userId=&page=
+
+### 1.5.4 投票结果导出
+
+- GET /lesson/download  具体怎么实现？
