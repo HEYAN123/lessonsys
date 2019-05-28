@@ -37,6 +37,16 @@
       - [1.6.2.5 获取班级列表](#1625-获取班级列表)
       - [1.6.2.6 删除教学记录](#1626-删除教学记录)
       - [1.6.2.7 修改教学记录](#1627-修改教学记录)
+    - [1.6.3 投票题目管理](#163-投票题目管理)
+      - [1.6.3.1 获取题目列表](#1631-获取题目列表)
+      - [1.6.3.2 新增题目](#1632-新增题目)
+      - [1.6.3.3 修改题目](#1633-修改题目)
+      - [1.6.3.4 删除题目](#1634-删除题目)
+    - [1.6.4 学生管理](#164-学生管理)
+      - [1.6.4.1 获取学生列表](#1641-获取学生列表)
+      - [1.6.4.2 新增学生](#1642-新增学生)
+      - [1.6.4.3 删除学生](#1643-删除学生)
+      - [1.6.4.4 修改学生](#1644-修改学生)
 
 <!-- /TOC -->
 
@@ -275,15 +285,27 @@
   "data": [
     {
       "questionId": 1,
-      "questionContent": "他教的好吗"
+      "questionContent": "他教的好吗",
+      "ranlk4": 5,
+      "ranlk3": 3,
+      "ranlk2": 2,
+      "ranlk1": 0,
     },
     {
       "questionId": 2,
-      "questionContent": "他教的好吗"
+      "questionContent": "他教的好吗",
+      "ranlk4": 5,
+      "ranlk3": 3,
+      "ranlk2": 2,
+      "ranlk1": 0,
     },
     {
       "questionId": 3,
-      "questionContent": "他教的好吗"
+      "questionContent": "他教的好吗",
+      "ranlk4": 5,
+      "ranlk3": 3,
+      "ranlk2": 2,
+      "ranlk1": 0,
     },
   ]
 }
@@ -392,18 +414,24 @@
       "userName": "贺妍",
       "sex": "女",
       "major": "计科",
+      "gradeClass": "",
+      "phone": "1234556",
+      "birthday": "",
+      "years": "",
+      "education": "本科",
+      "tip": "备注",
     },
     {
       "userId": "123",
       "userName": "贺妍",
       "sex": "女",
       "major": "计科",
-    },
-    {
-      "userId": "123",
-      "userName": "贺妍",
-      "sex": "女",
-      "major": "计科",
+      "gradeClass": "",
+      "phone": "1234556",
+      "birthday": "",
+      "years": "",
+      "education": "本科",
+      "tip": "备注",
     }],
     "page": {
       "totalSize": 25,
@@ -967,3 +995,189 @@
 
 - return: code: 0
 
+---
+
+#### 1.6.2.7 修改教学记录
+
+- PUT /lesson/teachList
+- 只可修改课程信息"lessonScore": "2",
+  "lessonTime": "12",
+  "lessonType": "必修",，修改班级，修改老师
+- payload:
+
+```json
+{
+  "userId": "何老师",
+  "teacherLesson": "编译原理",
+  "gradeClass": "2016-06"
+}
+```
+
+---
+
+### 1.6.3 投票题目管理
+
+#### 1.6.3.1 获取题目列表
+
+- 和1.2.3. 获取投票题目一样，但是修改一下，增加每个题目的四个分值，两个共用一个接口
+- GET /lesson/question
+  
+- return:
+
+```json
+{
+  "code":0,
+  "data": [
+    {
+      "questionId": 1,
+      "questionContent": "他教的好吗",
+      "ranlk4": 5,
+      "ranlk3": 3,
+      "ranlk2": 2,
+      "ranlk1": 0,
+    },
+    {
+      "questionId": 2,
+      "questionContent": "他教的好吗",
+      "ranlk4": 5,
+      "ranlk3": 3,
+      "ranlk2": 2,
+      "ranlk1": 0,
+    },
+    {
+      "questionId": 3,
+      "questionContent": "他教的好吗",
+      "ranlk4": 5,
+      "ranlk3": 3,
+      "ranlk2": 2,
+      "ranlk1": 0,
+    },
+  ]
+}
+```
+
+---
+
+#### 1.6.3.2 新增题目
+
+- POST /lesson/question
+- payload:
+
+```json
+{
+  "content": "他教的好吗",
+  "rank4": 5,
+  "ranlk3": 3,
+  "ranlk2": 2,
+  "ranlk1": 0,
+}
+```
+
+- return : code: 0
+
+---
+
+#### 1.6.3.3 修改题目
+
+- PUT /lesson/question
+- payload:
+
+```json
+{
+  "questionId": "123",
+  "content": "教的好吗",
+  "rank4": 5,
+  "ranlk3": 3,
+  "ranlk2": 2,
+  "ranlk1": 0
+}
+```
+
+- return: code: 0
+
+---
+
+#### 1.6.3.4 删除题目
+
+- DELETE /lesson/question/{questionId}
+
+- return: code: 0
+
+---
+
+### 1.6.4 学生管理
+
+#### 1.6.4.1 获取学生列表
+
+- GET /lesson/sList?gradeClass=2016-06 已有接口 按班级查询
+
+- return:
+
+```json
+{
+  "code": 0,
+  "data": {
+    "sList": [
+    {
+      "userId": "123",
+      "userName": "贺妍",
+      "sex": "女",
+      "major": "计科",
+      "gradeClass": "",
+      "phone": "1234556",
+      "birthday": "",
+      "years": "",
+      "education": "本科",
+      "tip": "备注",
+      
+
+    }],
+    "page": {
+      "totalSize": 25,
+      "totalPage": 10,
+      "eachPage": 5,
+      "nowPage": 1
+    }
+  }
+}
+```
+
+#### 1.6.4.2 新增学生
+
+- POST /lesson/sList
+- payload:
+
+```json
+{
+  "userId": "123",
+  "password": "123456",
+  "gradeClass": "2016-06",
+  "major": "计科",
+  "years": "4年",
+  "education": "本科"
+}
+```
+
+- return: code: 0
+
+#### 1.6.4.3 删除学生
+
+- DELETE /lesson/sList/{userId}
+
+- return: code: 0
+
+---
+
+#### 1.6.4.4 修改学生
+
+- PUT /lesson/sList
+- payload: 改哪项传哪项
+
+```json
+{
+  "userId": "123",
+  "major": "计科"
+}
+```
+
+- return: code: 0
