@@ -11,11 +11,11 @@
         type="index">
       </el-table-column>
       <el-table-column
-        prop="userName"
+        prop="teacherName"
         label="教师名称">
       </el-table-column>
       <el-table-column
-        prop="lessonName"
+        prop="teacherLesson"
         label="所授课程">
       </el-table-column>
       <el-table-column
@@ -152,39 +152,7 @@ export default {
           {
             questionId: "2",
             questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "3",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "4",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "5",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "6",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "7",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "8",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "9",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "10",
-            questionContent: "她教的有趣吗？",
-          },
+          }
         ]
     }
   },
@@ -202,13 +170,16 @@ export default {
     then(res=>{
       this.questionTable = res.data.data;
     });
-    for(let i = 0;i<this.questionTable.length;i++){
+    
+  },
+    mounted() {
+      for(let i = 0;i<this.questionTable.length;i++){
       let tempQ = {};
       tempQ.questionId = this.questionTable[i].questionId;
       tempQ.rank = "";
       this.questionResult.push(tempQ);
     }
-  },
+    },
   methods:{
       visibleHandle(visible,userId) {
         this[visible] = true;

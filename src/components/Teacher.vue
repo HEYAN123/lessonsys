@@ -3,14 +3,9 @@
     <el-divider content-position="left">
       <h2 style="margin: 0;">班级管理</h2>
     </el-divider>
-    <el-dropdown trigger="click" @command="handleCommand">
-      <el-button type="primary">
-        {{selectedItem.lessonId?selectedItem.lessonName+'-'+selectedItem.className+'班':'请选择班级'}}<i class="el-icon-arrow-down el-icon--right"></i>
-      </el-button>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item :command="[item.classId,item.className,item.lessonId,item.lessonName]" v-for="item in classList" :key="item.classId+'-'+item.lessonId">{{item.lessonName}}-{{item.className}}</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+    <el-select v-model="selectedItem" placeholder="请选择班级" @change="classChange">
+        <el-option  v-for="item in classList" :key="item.gradeClass+':'+item.teacherLesson" :label="item.teacherLesson+':'+item.gradeClass" :value="item.gradeClass+':'+item.teacherLesson"></el-option>
+    </el-select>
     <el-button type="success" @click="addVisible = true">新增学生</el-button>
     <el-dialog
         title="新增学生"
@@ -98,54 +93,18 @@
 
 <script>
 export default {
-  name: 'Honor',
+  name: 'Teacher',
   data () {
     return {
+      selectedItem: "",
       addVisible: false,
       addUserId: "",
       nowPage: 1,
       page:{},
       nowPageS: 1,
       pageS: {},
-      tableData: [
-        {
-          userId: "123",
-          userName: "贺妍",
-          sex: "女",
-          major: "计科",
-        },
-        {
-          userId: "123",
-          userName: "贺妍",
-          sex: "女",
-          major: "计科",
-        },
-        {
-          userId: "123",
-          userName: "贺妍",
-          sex: "女",
-          major: "计科",
-        }
-      ],
-      classList: [
-        {
-          classId: "123",
-          className: "2016-06",
-          lessonId: "1234",
-          lessonName: "编译原理"
-        },
-        {classId: "222",
-          className: "2016-07",
-          lessonId: "1234",
-          lessonName: "编译原理"
-        },
-        {
-          classId: "333",
-          className: "2016-08",
-          lessonId: "1234",
-          lessonName: "编译原理"
-        }
-      ],
+      tableData: [],
+      classList: [],
       commentList: [{
         commentId: "1",
         comment: "有趣"
@@ -158,12 +117,7 @@ export default {
         commentId: "1",
         comment: "有趣"
       }],
-      selectedItem: {
-        classId: "",
-        className: "",
-        lessonId: "",
-        lessonName: ""
-      },
+      
       vResult: {
         rank4: 0,
         rank3: 0,
@@ -174,23 +128,23 @@ export default {
     }
   },
   created() {
-    this.axios.get(`${this.API}vResult/${this.Cookies.get(userId)}`).
+    this.axios.get(`${this.API}class/${this.Cookies.get('userId')}`).
+    then(res=>{
+      this.classList = res.data.data;
+    });
+    this.axios.get(`${this.API}vResult/${this.Cookies.get('userId')}`).
     then(res=>{
       this.vResult = res.data.data;
+      this.drawLine();
     });
-    this.axios.get(`${this.API}cList?userId=${this.Cookies.get(userId)}&page=${this.nowPage}`).
+    this.axios.get(`${this.API}cList?userId=${this.Cookies.get('userId')}&nowPage=${this.nowPage}`).
     then(res=>{
       this.commentList = res.data.data.cList;
       this.page = res.data.data.page;
     });
-    this.axios.get(`${this.API}class/${this.Cookies.get(userId)}`).
-    then(res=>{
-      this.classList = res.data.data;
-    });
+    
   },
-  mounted() {
-    this.drawLine();
-  },
+  
   methods:{
     handleCurrentChange(index) {
         this.nowPage = index;
@@ -208,21 +162,20 @@ export default {
           this.pageS = res.data.data.page;
         })
       },
-      handleCommand(command) {
-        this.selectedItem.classId = command[0],
-        this.selectedItem.className = command[1],
-        this.selectedItem.lessonId = command[2],
-        this.selectedItem.lessonName = command[3]
-        this.axios.get(`${this.API}sList?userId=${this.Cookies.get(userId)}&classId=${this.selectedItem.classId}&lessonId=${this.selectedItem.lessonId}&page=${this.nowPageS}`).
+      classChange() {
+        let selected = this.selectedItem.split(":");
+        this.axios.get(`${this.API}sList?userId=${this.Cookies.get('userId')}&gradeClass=${selected[0]}&teacherLesson=${selected[1]}&nowPage=${this.nowPageS}`).
         then(res=>{
-          this.classList = res.data.data.sList;
+          this.tableData = res.data.data.sList;
           this.pageS = res.data.data.page;
         });
       },
       addStudent() {
+        let selected = this.selectedItem.split(":");
         this.axios.post(`${this.API}sList`,{
           userId: this.addUserId,
-          lessonId: this.selectedItem.lessonId
+          gradeClass: selected[0],
+          teacherLesson: selected[1]
         }).then(res=>{
           if(res.data.code === 0) {
             this.$message.success("添加成功！");
@@ -232,9 +185,10 @@ export default {
         })
       },
       deleteHandle(userId) {
+        let selected = this.selectedItem.split(":");
         this.axios.delete(`${this.API}sList`,{
           userId: userId,
-          lessonId: this.selectedItem.lessonId
+          teacherLesson: selected[1]
         }).then(res=>{
           if(res.data.code === 0) {
             this.$message.success("删除成功！");

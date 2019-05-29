@@ -4,7 +4,7 @@
       <el-header style="height:200px;">
         <el-row>
           <el-col :span="12" class="sysname">课程教学质量评测反馈系统</el-col>
-          <el-col :span="10" class="username" v-if="login">欢迎，{{userName?userName:'--'}}</el-col>
+          <el-col :span="10" class="username" v-if="login">欢迎，{{name?name:'--'}}</el-col>
           <el-col :span="1" class="username" @click.native="visibleHandle" v-if="login && (identify==='S' || identify==='T')"><i class="el-icon-user-solid"></i>信息</el-col>
           <el-col :span="1" class="username" @click.native="logout" v-if="login"><i class="el-icon-remove"></i>退出</el-col>
         </el-row>
@@ -31,10 +31,10 @@
             </el-row><br>
             <el-row>
               <el-col :span="12">
-                姓名：<span v-if="!changeInfo.userName">{{userInfo.userName}}<el-button icon="el-icon-edit" size="mini" circle style="margin-left:10px;" @click="changeInfo.userName=true"></el-button></span>
-                <el-input placeholder="请输入姓名" v-model="newName" v-if="changeInfo.userName" size="mini" style="width:50%;">
+                姓名：<span v-if="!changeInfo.name">{{userInfo.name}}<el-button icon="el-icon-edit" size="mini" circle style="margin-left:10px;" @click="changeInfo.name=true"></el-button></span>
+                <el-input placeholder="请输入姓名" v-model="newName" v-if="changeInfo.name" size="mini" style="width:50%;">
                 </el-input>
-                <el-button size="mini" v-if="changeInfo.userName" icon="el-icon-finished" @click="changeHandle('userName')"></el-button>
+                <el-button size="mini" v-if="changeInfo.name" icon="el-icon-finished" @click="changeHandle('name')"></el-button>
               </el-col>
               <el-col :span="12">
                 性别：<span v-if="!changeInfo.sex">{{userInfo.sex}}<el-button icon="el-icon-edit" size="mini" circle style="margin-left:10px;" @click="changeInfo.sex=true"></el-button></span>
@@ -76,10 +76,10 @@
             <p>账号：{{userInfo.userId}}</p>
             <el-row>
               <el-col :span="12">
-                姓名：<span v-if="!changeInfo.userName">{{userInfo.userName}}<el-button icon="el-icon-edit" size="mini" circle style="margin-left:10px;" @click="changeInfo.userName=true"></el-button></span>
-                <el-input placeholder="请输入姓名" v-model="newName" v-if="changeInfo.userName" size="mini" style="width:50%;">
+                姓名：<span v-if="!changeInfo.name">{{userInfo.name}}<el-button icon="el-icon-edit" size="mini" circle style="margin-left:10px;" @click="changeInfo.name=true"></el-button></span>
+                <el-input placeholder="请输入姓名" v-model="newName" v-if="changeInfo.name" size="mini" style="width:50%;">
                 </el-input>
-                <el-button size="mini" v-if="changeInfo.userName" icon="el-icon-finished" @click="changeHandle('userName')"></el-button>
+                <el-button size="mini" v-if="changeInfo.name" icon="el-icon-finished" @click="changeHandle('name')"></el-button>
               </el-col>
               <el-col :span="12">
                 性别：<span v-if="!changeInfo.sex">{{userInfo.sex}}<el-button icon="el-icon-edit" size="mini" circle style="margin-left:10px;" @click="changeInfo.sex=true"></el-button></span>
@@ -172,9 +172,9 @@ export default {
   name: 'App',
   data() {
     return {
-      login: true,
-      identify: "T",
-      userName: "",
+      login: false,
+      identify: "",
+      name: "",
       sVisible: false,
       tVisible: false,
       psVisible: false,
@@ -190,7 +190,7 @@ export default {
         email: "1234@qq.com",
         education: "本科",
         collage: "林大",
-        userName:"贺妍",
+        name:"贺妍",
         address: "行政楼",
         sex: "女",
         birthday: "1998-9-16",
@@ -198,7 +198,7 @@ export default {
         tip: "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
       },
       changeInfo:{
-        userName: false,
+        name: false,
         sex: false,
         birthday: false,
         phone: false,
@@ -221,8 +221,8 @@ export default {
   },
   created(){
     const type = this.Cookies.get('type');
-    const userName = this.Cookies.get('userName');
-    this.userName = userName;
+    const name = this.Cookies.get('userName');
+    this.name = name;
     if(type === "S") {
       this.identify = "S";
       this.login = true;
@@ -288,8 +288,8 @@ export default {
         userId: this.Cookies.get('userId')
       };
       switch (item) {
-        case 'userName':
-          tempForm.userName = this.newName;
+        case 'name':
+          tempForm.name = this.name;
           break;
         case 'sex':
           tempForm.sex = this.newSex;

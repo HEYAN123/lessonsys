@@ -78,7 +78,7 @@
         </el-input><br><br>
         任课教师：
         <el-select v-model="addL.userId" placeholder="请选择">
-            <el-option  v-for="item in tList" :key="item.userId" :label="item.name" :value="item.userId"></el-option>
+            <el-option v-for="item in tList" :key="item.userId" :label="item.name" :value="item.userId"></el-option>
         </el-select><br><br>
         开课班级：
         <el-select v-model="addL.gradeClass" placeholder="请选择">
@@ -102,50 +102,68 @@
             label="教师工号">
         </el-table-column>
         <el-table-column
-            prop="userName"
+            prop="name"
             label="教师姓名">
             <template slot-scope="scope">
                 <el-tooltip class="item" effect="dark"
-                :content="`教师姓名：${scope.row.userName}
+                :content="`教师姓名：${scope.row.name}
                 电子邮箱：${scope.row.email}
                 联系电话：${scope.row.phone}
                 性别：${scope.row.sex}
                 出生日期：${scope.row.birthday}
                 学历：${scope.row.education}
-                毕业学校：${scope.row.collage}
+                毕业学校：${scope.row.college}
                 办公地点：${scope.row.address}`"
                 placement="top">
-                    <el-button type="text">{{scope.row.userName}}</el-button>
+                    <el-button type="text">{{scope.row.name}}</el-button>
                 </el-tooltip>
             </template>
         </el-table-column>
         <el-table-column
-            prop="lessonName"
+            prop="teacherLesson"
             label="课程">
             <template slot-scope="scope">
                 <el-tooltip class="item" effect="dark"
-                :content="`课程名称：${scope.row.lessonName}
+                :content="`课程名称：${scope.row.teacherLesson}
                 学分：${scope.row.lessonScore}
                 学时：${scope.row.lessonTime}
                 类型：${scope.row.lessonType}`"
                 placement="top">
-                    <el-button type="text">{{scope.row.lessonName}}</el-button>
+                    <el-button type="text">{{scope.row.teacherLesson}}</el-button>
                 </el-tooltip>
             </template>
         </el-table-column>
         <el-table-column
-        prop="className"
+        prop="gradeClass"
         label="班级">
         </el-table-column>
         <el-table-column
         prop="reward"
         label="操作">
             <template slot-scope="scope">
-                <el-button type="primary" plain size="mini" @click="actHandle('removeVisible',scope.row.userId)">修改</el-button>
-                <el-button type="warning" plain size="mini" @click="actHandle('changeStaffVisible',scope.row.userId)">删除</el-button>
+                <el-button type="primary" plain size="mini" @click="changeT('changeTVisible',scope.row.userId,scope.row.teacherLesson,scope.row.gradeClass)">修改</el-button>
+                <el-button type="warning" plain size="mini" @click="deleteTeach(scope.row.userId,scope.row.teacherLesson,scope.row.gradeClass)">删除</el-button>
             </template>
         </el-table-column>
         </el-table><br>
+        <el-dialog
+            title="修改教学信息"
+            :visible.sync="changeTVisible"
+            width="30%">
+            修改项目：<el-select v-model="changeS.key" placeholder="请选择" style="width: auto;"><br>
+                <el-option label="教师姓名" value="name"></el-option>
+                <el-option label="教师电子邮箱" value="email"></el-option>
+                <el-option label="课程学分" value="lessonScore"></el-option>
+                <el-option label="课程学时" value="lessonTime"></el-option>
+                <el-option label="课程类型" value="lessonType"></el-option>
+            </el-select><br><br>
+            修改内容：<el-input placeholder="请输入内容" v-model="changeS.value" style="width: auto;">
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="changeTVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleChangeT">确 定</el-button>
+            </span>
+        </el-dialog>
         <el-pagination
         style="text-align:right;"
         background
@@ -171,7 +189,7 @@
         <el-input
         style="width: auto;"
           type="text"
-          v-model="addQ.content">
+          v-model="addQ.questionContent">
         </el-input><br><br>
         “优”选项分值：
         <el-input
@@ -216,19 +234,19 @@
             >
         </el-table-column>
         <el-table-column
-            prop="4"
+            prop="rank4"
             label="优">
         </el-table-column>
         <el-table-column
-        prop="3"
+        prop="rank3"
         label="良">
         </el-table-column>
         <el-table-column
-        prop="2"
+        prop="rank2"
         label="中">
         </el-table-column>
         <el-table-column
-        prop="1"
+        prop="rank1"
         label="差">
         </el-table-column>
         
@@ -236,20 +254,53 @@
         prop="reward"
         label="操作">
             <template slot-scope="scope">
-                <el-button type="primary" plain size="mini" @click="actHandle('removeVisible',scope.row.userId)">修改</el-button>
-                <el-button type="warning" plain size="mini" @click="actHandle('changeStaffVisible',scope.row.userId)">删除</el-button>
+                <el-button type="primary" plain size="mini" @click="changeStu('changeQVisible',scope.row.questionId)">修改</el-button>
+                <el-button type="warning" plain size="mini" @click="deleteQues(scope.row.questionId)">删除</el-button>
             </template>
         </el-table-column>
         </el-table><br>
+        <el-dialog
+            title="修改题目信息"
+            :visible.sync="changeQVisible"
+            width="30%">
+            修改项目：<el-select v-model="changeS.key" placeholder="请选择" style="width: auto;"><br>
+                <el-option label="题目内容" value="questionContent"></el-option>
+                <el-option label="优的分值" value="rank4"></el-option>
+                <el-option label="良的分值" value="rank3"></el-option>
+                <el-option label="中的分值" value="rank2"></el-option>
+                <el-option label="差的分值" value="rank1"></el-option>
+            </el-select><br><br>
+            修改内容：<el-input placeholder="请输入内容" v-model="changeS.value" style="width: auto;">
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="changeSVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleChangeQ">确 定</el-button>
+            </span>
+        </el-dialog>
         </el-collapse-item>
         <el-collapse-item>
             <template slot="title">
             <h2 style="margin: 0;">学生管理</h2>
             </template>
-            <el-select v-model="selectedClass" placeholder="请选择班级" :change="classChange">
+            <el-select v-model="selectedClass" placeholder="请选择班级" @change="classChange">
                 <el-option  v-for="item in cList" :key="item.gradeClass" :label="item.gradeClass" :value="item.gradeClass"></el-option>
             </el-select>
-            <el-button type="primary" size="small">新增班级</el-button>  
+            <el-button type="primary" size="small" @click="addCVisible = true">新增班级</el-button>
+            <el-dialog
+                title="新增班级"
+                :visible.sync="addCVisible"
+                width="30%">
+                请输入班级编号（例如，2016-06）：
+                <el-input
+                style="width: auto;"
+                type="text"
+                v-model="addC">
+                </el-input>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="addCVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="handleAddC">确 定</el-button>
+                </span>
+            </el-dialog>
             <el-button type="primary" size="small" @click="addSVisible=true">新增学生</el-button>
             <el-dialog
         title="新增学生"
@@ -306,7 +357,7 @@
         <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="学生姓名:">
-                <span>{{ props.row.userName }}</span>
+                <span>{{ props.row.name }}</span>
             </el-form-item>
             <el-form-item label="联系电话:">
                 <span>{{ props.row.phone }}</span>
@@ -331,11 +382,11 @@
             label="学号">
         </el-table-column>
         <el-table-column
-            prop="userName"
+            prop="name"
             label="学生姓名">
         </el-table-column>
         <el-table-column
-            prop="className"
+            prop="gradeClass"
             label="班级">
         </el-table-column>
         <el-table-column
@@ -346,11 +397,28 @@
         prop="reward"
         label="操作">
             <template slot-scope="scope">
-                <el-button type="primary" plain size="mini" @click="actHandle('removeVisible',scope.row.userId,'change')">修改</el-button>
-                <el-button type="warning" plain size="mini" @click="actHandle('changeStaffVisible',scope.row.userId,'remove')">删除</el-button>
+                <el-button type="primary" plain size="mini" @click="changeStu('changeSVisible',scope.row.userId)">修改</el-button>
+                <el-button type="warning" plain size="mini" @click="deleteStu(scope.row.userId)">删除</el-button>
             </template>
         </el-table-column>
         </el-table><br>
+        <el-dialog
+            title="修改学生信息"
+            :visible.sync="changeSVisible"
+            width="30%">
+            修改项目：<el-select v-model="changeS.key" placeholder="请选择" style="width: auto;"><br>
+                <el-option label="新班级" value="gradeClass"></el-option>
+                <el-option label="新专业" value="major"></el-option>
+                <el-option label="新学制" value="years"></el-option>
+                <el-option label="新学历" value="education"></el-option>
+            </el-select><br><br>
+            修改内容：<el-input placeholder="请输入内容" v-model="changeS.value" style="width: auto;">
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="changeSVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleChangeS">确 定</el-button>
+            </span>
+        </el-dialog>
         <el-pagination
         style="text-align:right;"
         background
@@ -373,6 +441,19 @@ export default {
     return {
         voteState: 0,
         commentState: 0,
+        selectedTeach: {
+            userId: "",
+            teacherLesson: "",
+            gradeClass: ""
+        },
+        changeTVisible: false,
+        changeSVisible: false,
+        changeQVisible: false,
+        changeS: {
+            key: "",
+            value: ""
+        },
+        selectedStu: "",
         addTVisible: false,
         addT: {
             userId: "",
@@ -400,12 +481,14 @@ export default {
         },
         addQVisible: false,
         addQ: {
-            content: "",
+            questionContent: "",
             rank4: 0,
             rank3: 0,
             rank2: 0,
             rank1: 0
         },
+        addCVisible: false,
+        addC: "",
         tList: [],
         cList: [],
         lessonPage: {
@@ -526,17 +609,18 @@ export default {
     then(res=>{
     this.cList = res.data.data;
     this.selectedClass = this.cList[0].gradeClass;
-    })
-    this.axios.get(`${this.API}teachList?page=1`).
-    then(res=>{
-    this.lessonTable = res.data.data.teachList;
-    this.lessonPage = res.data.data.page;
-    })
-    this.axios.get(`${this.API}sList?gradeClass=${this.selectedClass}&page=1`).
+    this.axios.get(`${this.API}sList?gradeClass=${this.selectedClass}&nowPage=1`).
     then(res=>{
     this.studentTable = res.data.data.sList;
     this.stuPage = res.data.data.page;
     })
+    })
+    this.axios.get(`${this.API}teachList?nowPage=1`).
+    then(res=>{
+    this.lessonTable = res.data.data.teachList;
+    this.lessonPage = res.data.data.page;
+    })
+    
     this.axios.get(`${this.API}question`).
     then(res=>{
     this.questionTable = res.data.data;
@@ -551,6 +635,9 @@ export default {
                 this.$message.success("修改成功！")
                 this.voteState = state
             }
+            else {
+                this.$message.error(res.data.message);
+            }
         })
       },
       changePerform(state) {
@@ -561,6 +648,9 @@ export default {
                 this.$message.success("修改成功！")
                 this.commentState = state
             }
+            else {
+                this.$message.error(res.data.message);
+            }
         })
       },
       handleAddT() {
@@ -568,6 +658,9 @@ export default {
             if(res.data.code === 0) {
                 this.$message.success("添加成功！")
                 this.addTVisible = false;
+            }
+            else {
+                this.$message.error(res.data.message);
             }
         })
       },
@@ -577,27 +670,53 @@ export default {
                 this.$message.success("添加成功！")
                 this.addLVisible = false;
             }
+            else {
+                this.$message.error(res.data.message);
+            }
         })
       },
       handleAddS() {
-          this.axios.post(`${this.API}sList`,this.addS).then(res=>{
+          this.axios.post(`${this.API}student`,this.addS).then(res=>{
             if(res.data.code === 0) {
                 this.$message.success("添加成功！")
                 this.addSVisible = false;
             }
+            else {
+                this.$message.error(res.data.message);
+            }
         })
       },
       handleAddQ() {
+          this.addQ.rank4 = parseInt(this.addQ.rank4);
+          this.addQ.rank3 = parseInt(this.addQ.rank3);
+          this.addQ.rank2 = parseInt(this.addQ.rank2);
+          this.addQ.rank1 = parseInt(this.addQ.rank1);
           this.axios.post(`${this.API}question`,this.addQ).then(res=>{
             if(res.data.code === 0) {
                 this.$message.success("添加成功！")
                 this.addQVisible = false;
             }
+            else {
+                this.$message.error(res.data.message);
+            }
+        })
+      },
+      handleAddC() {
+          this.axios.post(`${this.API}addC`,{
+              gradeClass: this.addC
+          }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success("添加成功！")
+                this.addCVisible = false;
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
         })
       },
       handleLessonChange(index) {
           this.nowLessonPage = index;
-        this.axios.get(`${this.API}teachList?page=${this.nowLessonPage}`).
+        this.axios.get(`${this.API}teachList?nowPage=${this.nowLessonPage}`).
         then(res=>{
           this.lessonTable = res.data.data.teachList;
           this.lessonPage = res.data.data.page;
@@ -605,14 +724,14 @@ export default {
       },
       handleStuChange(index) {
         this.nowStuPage = index;
-        this.axios.get(`${this.API}sList?page=${this.nowStuPage}`).
+        this.axios.get(`${this.API}sList?p=nowPage=${this.nowStuPage}`).
         then(res=>{
           this.studentTable = res.data.data.sList;
           this.stuPage = res.data.data.page;
         })
       },
       classChange() {
-          this.axios.get(`${this.API}sList?gradeClass=${this.selectedClass}&page=1`).
+          this.axios.get(`${this.API}sList?gradeClass=${this.selectedClass}&nowPage=1`).
             then(res=>{
             this.studentTable = res.data.data.sList;
             this.stuPage = res.data.data.page;
@@ -621,7 +740,105 @@ export default {
       actHandle(visible,userId,action) {
 
       },
-
+      deleteStu(userId) {
+          this.axios.delete(`${this.API}student/${userId}`).
+            then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success('删除成功！');
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
+          })
+      },
+      deleteTeach(userId,teacherLesson,gradeClass) {
+          this.axios.delete(`${this.API}teachList`,{
+              data: {
+                  userId:userId,
+                    teacherLesson: teacherLesson,
+                    gradeClass: gradeClass
+              }
+          }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success('删除成功！');
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
+          })
+      },
+      changeStu(visible,userId) {
+          this[visible] = true;
+          this.selectedStu = userId;
+      },
+      handleChangeS() {
+          let temp = {};
+          temp[this.changeS.key] = this.changeS.value;
+            this.axios.put(`${this.API}student`, {
+                userId: this.selectedStu,
+                ...temp
+            }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success('修改成功！');
+                this.changeSVisible = false;
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
+          })
+          
+      },
+      handleChangeQ() {
+          let temp = {};
+          if(this.changeS.key!== "questionContent") this.changeS.value = parseInt(this.changeS.value);
+          temp[this.changeS.key] = this.changeS.value;
+            this.axios.put(`${this.API}question`, {
+                questionId: this.selectedStu,
+                ...temp
+            }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success('修改成功！');
+                this.changeQVisible = false;
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
+          })
+          
+      },
+      deleteQues(questionId) {
+          this.axios.delete(`${this.API}question/${questionId}`).
+            then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success('删除成功！');
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
+          })
+      },
+      changeT(visible,userId,teacherLesson,gradeClass) {
+          this[visible] = true;
+          this.selectedTeach.userId = userId;
+          this.selectedTeach.teacherLesson = teacherLesson;
+          this.selectedTeach.gradeClass = gradeClass;
+      },
+      handleChangeT() {
+          let temp = {};
+          temp[this.changeS.key] = this.changeS.value;
+            this.axios.put(`${this.API}teachList`, {
+                ...this.selectedTeach,
+                ...temp
+            }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success('修改成功！');
+                this.changeQVisible = false;
+            }
+            else {
+                this.$message.error(res.data.message);
+            }
+          })
+      }
 
   }
 }

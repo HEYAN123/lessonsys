@@ -42,8 +42,8 @@
               :visible.sync="signinVisible"
               width="30%">
               <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" prop="userName">
-                  <el-input v-model="ruleForm.userName"></el-input>
+                <el-form-item label="姓名" prop="name">
+                  <el-input v-model="ruleForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" prop="sex">
                   <el-radio v-model="ruleForm.sex" label="男">男</el-radio>
@@ -51,6 +51,7 @@
                 </el-form-item>
                 <el-form-item label="出生日期" prop="birthday">
                   <el-date-picker
+                    value-format="yyyy-MM-dd"
                     v-model="ruleForm.birthday"
                     type="date"
                     placeholder="选择日期">
@@ -59,8 +60,8 @@
                 <el-form-item label="学历" prop="education">
                   <el-input v-model="ruleForm.education"></el-input>
                 </el-form-item>
-                <el-form-item label="毕业院校" prop="collage">
-                  <el-input v-model="ruleForm.collage"></el-input>
+                <el-form-item label="毕业院校" prop="college">
+                  <el-input v-model="ruleForm.college"></el-input>
                 </el-form-item>
                 <el-form-item label="办公地点" prop="address">
                   <el-input v-model="ruleForm.address"></el-input>
@@ -77,8 +78,8 @@
               :visible.sync="signinVisible1"
               width="30%">
               <el-form :model="ruleForm1" :rules="rules" ref="ruleForm1" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" prop="userName">
-                  <el-input v-model="ruleForm1.userName"></el-input>
+                <el-form-item label="姓名" prop="name">
+                  <el-input v-model="ruleForm1.name"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" prop="sex">
                   <el-radio v-model="ruleForm1.sex" label="男">男</el-radio>
@@ -122,22 +123,22 @@ export default {
       userId: "",
       password: "",
       ruleForm: {
-        userName: '',
+        name: '',
         sex: '',
         birthday: '',
         education: '',
         address: '',
-        collage: ''
+        college: ''
       },
       ruleForm1: {
-        userName: '',
+        name: '',
         sex: '',
         birthday: '',
         phone: '',
         tip: ''
       },
       rules: {
-        userName: [
+        name: [
           { required: true, message: '请输入您的姓名', trigger: 'blur' }
         ],
         sex: [
@@ -152,7 +153,7 @@ export default {
         address: [
           { required: true, message: '请输入您的工作地点', trigger: 'blur' }
         ],
-        collage: [
+        college: [
           { required: true, message: '请输入您的毕业院校', trigger: 'blur' }
         ],
         phone: [
@@ -171,10 +172,10 @@ export default {
       }).
       then(res=>{
         if(res.data.code === 0) {
-          if(res.data.message === "ok") {
+          if(res.data.data.message === "ok" || res.data.data.type === 'M' || res.data.data.type === 'L') {
             this.$message.success('登录成功！');
-            this.Cookies.set('type',res.data.type);
-            this.Cookies.set('userName',res.data.userName);
+            this.Cookies.set('type',res.data.data.type);
+            this.Cookies.set('userName',res.data.data.userName);
             this.Cookies.set('userId',this.userId);
             if(res.data.data.type === 'S') {
               this.$router.push({
@@ -196,13 +197,13 @@ export default {
                 path: '/manager'
               });
             }
-            location.reload;
+            location.reload();
           }
-          else if(res.data.message === "fail") {
-            if(res.data.type === "T") {
+          else if(res.data.data.message === "fail") {
+            if(res.data.data.type === "T") {
               this.signinVisible = true;
             }
-            else if(res.data,type === "S") {
+            else if(res.data.data.type === "S") {
               this.signinVisible1 = true;
             }
           }
