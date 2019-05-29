@@ -1129,8 +1129,6 @@
       "years": "",
       "education": "本科",
       "tip": "备注",
-      
-
     }],
     "page": {
       "totalSize": 25,
