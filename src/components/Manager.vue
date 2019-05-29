@@ -6,16 +6,81 @@
             <h2 style="margin: 0;">系统管理</h2>
             </template>
             <el-button type="primary" size="small" @click="changeVote(voteSysState==1?0:1)">{{voteSysState==1?'投票系统关闭':'投票系统开启'}}</el-button>
-        <el-button type="success" size="small" @click="changePerform(performSysState==1?0:1)">{{performSysState==1?'评价系统关闭':'评价系统开启'}}</el-button>
+        <el-button type="success" size="small" @click="changePerform(commentState==1?0:1)">{{commentState==1?'评价系统关闭':'评价系统开启'}}</el-button>
         </el-collapse-item>
         <el-collapse-item>
             <template slot="title">
             <h2 style="margin: 0;">教学管理</h2>
             </template>
-            <el-button type="primary" size="small">新增教师</el-button>
-      <el-button type="success" size="small">新增班级</el-button>
-      <el-button type="warning" size="small">新增课程</el-button>      
+            <el-button type="primary" size="small" @click="addTVisible = true">新增教师</el-button>
+            <el-button type="warning" size="small">新增课程</el-button>      
     <br><br>
+    <el-dialog
+        title="新增教师"
+        :visible.sync="addTVisible"
+        width="30%">
+        工号：
+        <el-input
+          type="text"
+          v-model="addT.userId">
+        </el-input>
+        初始密码：
+        <el-input
+          type="text"
+          v-model="addT.password">
+        </el-input>
+        姓名：
+        <el-input
+          type="text"
+          v-model="addT.name">
+        </el-input>
+        电子邮箱：
+        <el-input
+          type="text"
+          v-model="addT.email">
+        </el-input>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="addTVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handleAddT">确 定</el-button>
+        </span>
+    </el-dialog>
+    <el-dialog
+        title="新增课程"
+        :visible.sync="addTVisible"
+        width="30%">
+        课程名称：
+        <el-input
+          type="text"
+          v-model="addL.teacherLesson">
+        </el-input>
+        学分：
+        <el-input
+          type="text"
+          v-model="addL.lessonScore">
+        </el-input>
+        学时：
+        <el-input
+          type="text"
+          v-model="addL.lessonTime">
+        </el-input>
+        课程类型：
+        <el-input
+          type="text"
+          v-model="addL.lessonType">
+        </el-input>
+        任课教师：
+        <el-select v-model="addL.userId" placeholder="请选择">
+            <el-option  v-for="item in tList" :key="item.userId" :label="item.name" :value="item.userId"></el-option>
+        </el-select>
+        开课班级：
+        <el-select v-model="addL.gradeClass" placeholder="请选择">
+            <el-option  v-for="item in cList" :key="item.gradeClass" :label="item.gradeClass" :value="item.gradeClass"></el-option>
+        </el-select>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="addLVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handleAddL">确 定</el-button>
+        </span>
+    </el-dialog>
     <el-table
         :data="lessonTable"
         stripe
@@ -77,6 +142,10 @@
         style="text-align:right;"
         background
         layout="prev, pager, next"
+        @current-change="handleLessonChange"
+        :current-page.sync="nowLessonPage"
+        :page-size="lessonPage.eachPage"
+        :total="lessonPage.totalSize"
         >
         </el-pagination>
         </el-collapse-item>
@@ -130,6 +199,10 @@
             <template slot="title">
             <h2 style="margin: 0;">学生管理</h2>
             </template>
+            <el-select v-model="selectedClass" placeholder="请选择班级" :change="classChange">
+                <el-option  v-for="item in cList" :key="item.gradeClass" :label="item.gradeClass" :value="item.gradeClass"></el-option>
+            </el-select>
+            <el-button type="primary" size="small">新增班级</el-button>  
             <el-button type="primary" size="small">新增学生</el-button>   
         <br><br>
     <el-table
@@ -192,6 +265,10 @@
         style="text-align:right;"
         background
         layout="prev, pager, next"
+        @current-change="handleStuChange"
+        :current-page.sync="nowStuPage"
+        :page-size="stuPage.eachPage"
+        :total="stuPage.totalSize"
         >
         </el-pagination>
         </el-collapse-item>
@@ -204,7 +281,39 @@ export default {
   name: 'Manager',
   data () {
     return {
-        
+        addTVisible: false,
+        addT: {
+            userId: "",
+            password: "",
+            name: "",
+            email: ""
+        },
+        addLVisible: false,
+        addL: {
+            teacherLesson: "",
+            lessonScore: "",
+            lessonTime: "",
+            lessonType: "",
+            userId: "",
+            gradeClass: ""
+        },
+        tList: [],
+        cList: [],
+        lessonPage: {
+            totalSize: 0,
+            totalPage: 0,
+            eachPage: 0,
+            nowPage: 0
+        },
+        stuPage: {
+            totalSize: 0,
+            totalPage: 0,
+            eachPage: 0,
+            nowPage: 0
+        },
+        nowLessonPage: 1,
+        nowStuPage: 1,
+        selectedClass: "",
         newScore:0,
         appStateText: "--",
       stateText:{
@@ -375,18 +484,25 @@ export default {
     }
   },
   created() {
-    // this.axios.get(`${this.API}starfs`).
-    // then(res=>{
-    // this.tableData = res.data.data;
-    // })
-    // this.axios.get(`${this.API}performSysState`).
-    // then(res=>{
-    // this.performSysState = res.data.state;
-    // })
-    // this.axios.get(`${this.API}voteSysState`).
-    // then(res=>{
-    // this.voteSysState = res.data.state;
-    // })
+    this.axios.get(`${this.API}tList`).
+    then(res=>{
+    this.tList = res.data.data;
+    });
+    this.axios.get(`${this.API}gList`).
+    then(res=>{
+    this.cList = res.data.data;
+    this.selectedClass = this.cList[0].gradeClass;
+    })
+    this.axios.get(`${this.API}teachList?page=1`).
+    then(res=>{
+    this.lessonTable = res.data.data.teachList;
+    this.lessonPage = res.data.data.page;
+    })
+    this.axios.get(`${this.API}sList?gradeClass=${this.selectedClass}&page=1`).
+    then(res=>{
+    this.studentTable = res.data.data.sList;
+    this.stuPage = res.data.data.page;
+    })
     // this.axios.get(`${this.API}teams`).
     // then(res=>{
     // this.teamTable = res.data.data;
@@ -409,7 +525,66 @@ export default {
     // })
   },
   methods:{
-      
+      changeVote(state) {
+        this.axios.put(`${this.API}sysState`,{
+            voteState: state
+        }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success("修改成功！")
+                this.voteState = state
+            }
+        })
+      },
+      changePerform(state) {
+          this.axios.put(`${this.API}sysState`,{
+            commentState: state
+        }).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success("修改成功！")
+                this.commentState = state
+            }
+        })
+      },
+      handleAddT() {
+          this.axios.post(`${this.API}addT`,this.addT).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success("添加成功！")
+                this.addTVisible = false;
+            }
+        })
+      },
+      handleAddL() {
+          this.axios.post(`${this.API}addL`,this.addL).then(res=>{
+            if(res.data.code === 0) {
+                this.$message.success("添加成功！")
+                this.addLVisible = false;
+            }
+        })
+      },
+      handleLessonChange(index) {
+          this.nowLessonPage = index;
+        this.axios.get(`${this.API}teachList?page=${this.nowLessonPage}`).
+        then(res=>{
+          this.lessonTable = res.data.data.teachList;
+          this.lessonPage = res.data.data.page;
+        })
+      },
+      handleStuChange(index) {
+        this.nowStuPage = index;
+        this.axios.get(`${this.API}sList?page=${this.nowStuPage}`).
+        then(res=>{
+          this.studentTable = res.data.data.sList;
+          this.stuPage = res.data.data.page;
+        })
+      },
+      classChange() {
+          this.axios.get(`${this.API}sList?gradeClass=${this.selectedClass}&page=1`).
+            then(res=>{
+            this.studentTable = res.data.data.sList;
+            this.stuPage = res.data.data.page;
+          })
+      }
+
 
   }
 }

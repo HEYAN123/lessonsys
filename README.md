@@ -1181,3 +1181,16 @@
 ```
 
 - return: code: 0
+
+#### 1.6.4.5 增加班级
+
+- POST /lesson/addC
+- payload:
+
+```json
+{
+  "gradeClass": "2016-06"
+}
+```
+
+- return: code: 0
