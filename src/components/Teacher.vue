@@ -187,13 +187,16 @@ export default {
       deleteHandle(userId) {
         let selected = this.selectedItem.split(":");
         this.axios.delete(`${this.API}sList`,{
-          userId: userId,
-          teacherLesson: selected[1]
+          data: {
+            userId: userId,
+            teacherLesson: selected[1],
+            gradeClass: selected[0]
+          }
         }).then(res=>{
           if(res.data.code === 0) {
             this.$message.success("删除成功！");
           }
-          else this.$message.error("服务器异常");
+          else this.$message.error(res.data.message);
         })
       },
       drawLine() {

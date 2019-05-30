@@ -27,7 +27,7 @@
           size="mini"
           type="primary"
           @click="visibleHandle('scoreVisible',scope.row.userId)"
-          :disabled="tableData[scope.$index].vState === 1 || voteState === 0">评分</el-button>
+          :disabled="tableData[scope.$index].score !== 0 || voteState === 0">评分</el-button>
         <el-button
           plain
           size="mini"
@@ -67,7 +67,7 @@
         </el-table>
         <span slot="footer" class="dialog-footer">
             <el-button @click="scoreVisible = false">取 消</el-button>
-            <el-button type="primary" @click="scoreHandle()">确 定</el-button>
+            <el-button type="primary" @click="scoreHandle">确 定</el-button>
         </span>
     </el-dialog>
     <el-dialog
@@ -102,58 +102,8 @@ export default {
       comment: "",
       selectT: "",
       questionResult:[],
-      tableData: [{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 0
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 0
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 0
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 0
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 0
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 1
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 1
-        },{
-          userId:'123',
-          userName: '何老师',
-          lessonName: '编译原理',
-          vState: 0
-
-        }],
-        questionTable: [
-          {
-            questionId: "1",
-            questionContent: "她教的有趣吗？",
-          },
-          {
-            questionId: "2",
-            questionContent: "她教的有趣吗？",
-          }
-        ]
+      tableData: [],
+      questionTable: []
     }
   },
   created() {
@@ -169,16 +119,17 @@ export default {
     this.axios.get(`${this.API}question`).
     then(res=>{
       this.questionTable = res.data.data;
-    });
-    
-  },
-    mounted() {
       for(let i = 0;i<this.questionTable.length;i++){
       let tempQ = {};
       tempQ.questionId = this.questionTable[i].questionId;
       tempQ.rank = "";
       this.questionResult.push(tempQ);
     }
+    });
+    
+  },
+    mounted() {
+      
     },
   methods:{
       visibleHandle(visible,userId) {
@@ -186,11 +137,10 @@ export default {
         this.selectT = userId;
         if(visible === "scoreVisible") {
           
-          console.log(this.questionResult);
+          // console.log(this.questionResult);
         }
       },
       scoreHandle() {
-        console.log(this.questionResult);
         for(let i=0;i<this.questionResult.length;i++)
         {
           if(!this.questionResult[i].rank) {
@@ -215,7 +165,7 @@ export default {
             this.commentVisible = false;
           }
           else {
-            this.$message.error("服务器异常");
+            this.$message.error(res.data.message);
           }
         })
       }

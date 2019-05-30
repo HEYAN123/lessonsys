@@ -15,7 +15,7 @@
             <p>账号：{{userInfo.userId}}</p>
             <el-row>
               <el-col :span="12">
-                班级：{{userInfo.className}}
+                班级：{{userInfo.gradeClass}}
               </el-col>
               <el-col :span="12">
                 专业：{{userInfo.major}}

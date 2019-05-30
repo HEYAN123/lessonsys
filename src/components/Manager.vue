@@ -151,7 +151,6 @@
             :visible.sync="changeTVisible"
             width="30%">
             修改项目：<el-select v-model="changeS.key" placeholder="请选择" style="width: auto;"><br>
-                <el-option label="教师姓名" value="name"></el-option>
                 <el-option label="教师电子邮箱" value="email"></el-option>
                 <el-option label="课程学分" value="lessonScore"></el-option>
                 <el-option label="课程学时" value="lessonTime"></el-option>
