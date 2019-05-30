@@ -148,7 +148,7 @@ export default {
   methods:{
     handleCurrentChange(index) {
         this.nowPage = index;
-        this.axios.get(`${this.API}cList?userId=${this.Cookies.get('userId')}&page=${this.nowPage}`).
+        this.axios.get(`${this.API}cList?userId=${this.Cookies.get('userId')}&nowPage=${this.nowPage}`).
         then(res=>{
           this.commentList = res.data.data.cList;
           this.page = res.data.data.page;
@@ -156,7 +156,7 @@ export default {
       },
       handleCurrentChangeS(index) {
         this.nowPageS = index;
-        this.axios.get(`${this.API}sList?userId=${this.Cookies.get('userId')}&page=${this.nowPageS}`).
+        this.axios.get(`${this.API}sList?userId=${this.Cookies.get('userId')}&nowPage=${this.nowPageS}`).
         then(res=>{
           this.tableData = res.data.data.sList;
           this.pageS = res.data.data.page;

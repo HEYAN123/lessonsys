@@ -140,7 +140,7 @@ export default {
       },
       handleVoteChange(index) {
         this.nowVotePage = index;
-        this.axios.get(`${this.API}analyse?page=${this.nowVotePage}`).
+        this.axios.get(`${this.API}analyse?nowPage=${this.nowVotePage}`).
         then(res=>{
           this.tableData = res.data.data.vList;
           this.page = res.data.data.page;
