@@ -18,7 +18,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueQuillEditor);
 
-Vue.prototype.API = "http://120.79.141.169:8080/lesson/"
+Vue.prototype.API = "http://129.211.61.41:8080/lesson/"
 Vue.prototype.axios = axios
 Vue.prototype.Cookies = Cookies
 Vue.prototype.echarts = echarts

@@ -154,6 +154,9 @@ export default {
             this.$message.success("评分成功！");
             this.scoreVisible = false;
           }
+          else {
+            this.$message.error(res.data.message);
+          }
         })
       },
       commentHandle() {
