@@ -32,7 +32,7 @@
             label="学号">
         </el-table-column>
         <el-table-column
-            prop="userName"
+            prop="name"
             label="姓名">
         </el-table-column>
         <el-table-column
