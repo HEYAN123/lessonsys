@@ -3,7 +3,7 @@
     <el-container>
       <el-header style="height:200px;">
         <el-row>
-          <el-col :span="12" class="sysname">课程教学质量评测反馈系统</el-col>
+          <el-col :span="12" class="sysname">教学质量反馈评价系统</el-col>
           <el-col :span="10" class="username" v-if="login">欢迎，{{name?name:'--'}}</el-col>
           <el-col :span="1" class="username" @click.native="visibleHandle" v-if="login && (identify==='S' || identify==='T')"><i class="el-icon-user-solid"></i>信息</el-col>
           <el-col :span="1" class="username" @click.native="logout" v-if="login"><i class="el-icon-remove"></i>退出</el-col>
