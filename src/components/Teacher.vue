@@ -53,6 +53,44 @@
           type="warning"
           @click="deleteHandle(scope.row.userId)"
           >删除</el-button>
+          <el-button
+          plain
+          size="mini"
+          type="primary"
+          @click="commentVisible=true"
+          >评价</el-button><br><br>
+          <el-dialog
+        title="评价"
+        :visible.sync="commentVisible"
+        width="30%">
+        请输入你对该学生的评价：
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 4}"
+          placeholder="请输入内容"
+          v-model="comment">
+        </el-input>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="commentVisible = false">取 消</el-button>
+            <el-button type="primary" @click="commentHandle()">确 定</el-button>
+        </span>
+    </el-dialog>
+          <el-button
+          plain
+          size="mini"
+          >优</el-button>
+          <el-button
+          plain
+          size="mini"
+          >良</el-button>
+          <el-button
+          plain
+          size="mini"
+          >中</el-button>
+          <el-button
+          plain
+          size="mini"
+          >差</el-button>
         </template>
         </el-table-column>
 
@@ -72,7 +110,12 @@
     </el-divider>
     <p><b>当前得分：</b>{{vResult.score}}</p>
     <b>得分分析：</b>
-    <div id="myChart" style="width:600px;height:300px;"></div>
+    <div id="myChart" style="width:600px;height:300px;"></div><br>
+    <el-select v-model="selectedItem" placeholder="请选择班级" @change="classChange">
+        <el-option label="数据库" value="数据库"></el-option>
+    </el-select>
+    <div id="myChart2" style="width:600px;height:300px;"></div>
+    <div id="myChart3" style="width:600px;height:300px;"></div><br>
     <p><b>学生评价：</b></p>
     <div>
       <el-card class="box-card" shadow="never" v-for="item in commentList" :key="item.commentId" >
@@ -96,6 +139,7 @@ export default {
   name: 'Teacher',
   data () {
     return {
+      commentVisible: false,
       selectedItem: "",
       addVisible: false,
       addUserId: "",
@@ -221,6 +265,71 @@ export default {
             series: [{
                 type: 'bar',
                 data: [this.vResult.rank4, this.vResult.rank3, this.vResult.rank2, this.vResult.rank1],
+                itemStyle: {
+                  normal: {
+                    color: function(params) { 
+                      var colorList = ['#12a182',"#1781b5","#dc9123","#ee3f4d"]; 
+                      return colorList[params.dataIndex];
+                    }
+                  }
+                }
+            }]
+        });
+
+        // 课程
+        let chart2 = this.echarts.init(document.getElementById('myChart2'));
+        chart2.setOption({
+            
+            tooltip: {
+              trigger: 'axis',
+              axisPointer : {
+              type : 'shadow'
+            }},
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: {
+                data: ["优","良","中","差"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'bar',
+                data: [80, 10, 5, 5],
+                itemStyle: {
+                  normal: {
+                    color: function(params) { 
+                      var colorList = ['#12a182',"#1781b5","#dc9123","#ee3f4d"]; 
+                      return colorList[params.dataIndex];
+                    }
+                  }
+                }
+            }]
+        });
+
+        let chart3 = this.echarts.init(document.getElementById('myChart3'));
+        chart3.setOption({
+            
+            tooltip: {
+              trigger: 'axis',
+              axisPointer : {
+              type : 'shadow'
+            }},
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: {
+                data: ["2016","2017","2018","2019"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'line',
+                data: [80, 90, 85, 88],
                 itemStyle: {
                   normal: {
                     color: function(params) { 

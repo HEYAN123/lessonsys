@@ -87,6 +87,30 @@
         </span>
     </el-dialog>
     <br>
+    <el-divider content-position="left">
+      <h2>教师反馈</h2>
+    </el-divider>
+    <el-table
+      :data="answer"
+      stripe
+      style="width: 100%;">
+      <el-table-column
+        type="index">
+      </el-table-column>
+      <el-table-column
+        prop="teacherName"
+        label="教师名称">
+      </el-table-column>
+      <el-table-column
+        prop="teacherLesson"
+        label="所授课程">
+      </el-table-column>
+      <el-table-column
+        prop="answer"
+        label="评语">
+        
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -95,6 +119,36 @@ export default {
   name: 'Student',
   data () {
     return {
+      answer:[
+        {
+            "score":0,
+            "teacherName":"李四",
+            "teacherLesson":"数据库",
+            "userId":"1000004021",
+            answer: "学习很刻苦。"
+        },
+        {
+            "score":1,
+            "teacherName":"王品",
+            "teacherLesson":"测试课程",
+            "userId":"1000004020",
+            answer: "善于提问，学习热情很高。"
+        },
+        {
+            "score":0,
+            "teacherName":"刘老师",
+            "teacherLesson":"数学",
+            "userId":"1000004022",
+            answer: "每次都坐第一排，很积极。"
+        },
+        {
+            "score":0,
+            "teacherName":"何老师",
+            "teacherLesson":"信息资源管理",
+            "userId":"1000004023",
+            answer: "学习态度端正。"
+        }
+    ],
       scoreVisible: false,
       commentVisible: false,
       voteState: 0,

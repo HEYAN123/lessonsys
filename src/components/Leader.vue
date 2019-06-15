@@ -84,6 +84,25 @@
         :page-size="page.eachPage"
         :total="page.totalSize">
         </el-pagination>
+        <el-divider content-position="left">
+      <h2 style="margin: 0;">评教情况</h2>
+    </el-divider>
+    <el-select v-model="selectedItem" placeholder="请选择班级">
+        <el-option label="信息与计算机工程学院" value="信息与计算机工程学院"></el-option>
+    </el-select>
+    <el-select v-model="selectedItem1" placeholder="请选择班级">
+        <el-option label="王平" value="王平"></el-option>
+    </el-select>
+    <p><b>当前得分：</b>87</p>
+    <b>得分分析：</b>
+    <div id="myChart" style="width:600px;height:300px;"></div><br>
+    <el-select v-model="selectedItem" placeholder="请选择班级">
+        <el-option label="信息与计算机工程学院" value="信息与计算机工程学院"></el-option>
+    </el-select>
+    <el-select v-model="selectedItem3" placeholder="请选择班级">
+        <el-option label="2015-03" value="2015-03"></el-option>
+    </el-select>
+    <div id="myChart2" style="width:600px;height:300px;"></div>
   </div>
 </template>
 
@@ -92,6 +111,9 @@ export default {
   name: 'Leader',
   data () {
     return {
+      selectedItem: "",
+    selectedItem1:"",
+    selectedItem3:"",
       nowPage: 1,
       nowVotePage: 1,
       page:{},
@@ -128,6 +150,10 @@ export default {
     then(res=>{
       this.tList = res.data.data;
     })
+    
+  },
+  mounted() {
+    this.drawLine();
   },
   methods:{
       handleCurrentChange(index) {
@@ -152,6 +178,104 @@ export default {
           this.cList = res.data.data.cList;
           this.page = res.data.data.page;
         })
+      },
+      drawLine() {
+        let chart = this.echarts.init(document.getElementById('myChart'));
+        chart.setOption({
+            
+            tooltip: {
+              trigger: 'axis',
+              axisPointer : {
+              type : 'shadow'
+            }},
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: {
+                data: ["优","良","中","差"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'bar',
+                data: [85, 93, 10, 2],
+                itemStyle: {
+                  normal: {
+                    color: function(params) { 
+                      var colorList = ['#12a182',"#1781b5","#dc9123","#ee3f4d"]; 
+                      return colorList[params.dataIndex];
+                    }
+                  }
+                }
+            }]
+        });
+
+        // 课程
+        let chart2 = this.echarts.init(document.getElementById('myChart2'));
+        chart2.setOption({
+            
+            tooltip: {
+              trigger: 'axis',
+              axisPointer : {
+              type : 'shadow'
+            }},
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: {
+                data: ["优","良","中","差"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'bar',
+                data: [80, 10, 5, 5],
+                itemStyle: {
+                  normal: {
+                    color: function(params) { 
+                      var colorList = ['#12a182',"#1781b5","#dc9123","#ee3f4d"]; 
+                      return colorList[params.dataIndex];
+                    }
+                  }
+                }
+            }]
+        });
+
+        let chart3 = this.echarts.init(document.getElementById('myChart3'));
+        console.log(document.getElementById('myChart3'));
+        chart3.setOption({
+            tooltip: {
+              trigger: 'axis',
+              axisPointer : {
+              type : 'shadow'
+            }},
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: {
+                data: ["2016","2017","2018","2019"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'line',
+                data: [80, 90, 85, 88],
+                itemStyle: {
+                  normal: {
+                    color: function(params) { 
+                      var colorList = ['#12a182',"#1781b5","#dc9123","#ee3f4d"]; 
+                      return colorList[params.dataIndex];
+                    }
+                  }
+                }
+            }]
+        });
       }
   }
 }
