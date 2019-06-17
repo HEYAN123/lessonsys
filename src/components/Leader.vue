@@ -215,34 +215,36 @@ export default {
         // 课程
         let chart2 = this.echarts.init(document.getElementById('myChart2'));
         chart2.setOption({
-            
-            tooltip: {
-              trigger: 'axis',
-              axisPointer : {
-              type : 'shadow'
-            }},
-            grid: {
-              left: '3%',
-              right: '4%',
-              bottom: '3%',
-              containLabel: true
-            },
-            xAxis: {
-                data: ["优","良","中","差"]
-            },
-            yAxis: {},
-            series: [{
-                type: 'bar',
-                data: [80, 10, 5, 5],
-                itemStyle: {
-                  normal: {
-                    color: function(params) { 
-                      var colorList = ['#12a182',"#1781b5","#dc9123","#ee3f4d"]; 
-                      return colorList[params.dataIndex];
-                    }
-                  }
+        tooltip : {
+            trigger: 'item',
+            formatter: "{d}%"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+        },
+            series : [
+        {
+            name: '评价',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:80, name:'优'},
+                {value:10, name:'良'},
+                {value:5, name:'中'},
+                {value:5, name:'差'},
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
-            }]
+            }
+        }
+    ]
         });
 
         let chart3 = this.echarts.init(document.getElementById('myChart3'));
